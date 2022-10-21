@@ -1,14 +1,18 @@
 import {createGlobalStyle} from "styled-components";
-import { Home } from "./pages/Home";
+import { Home, Register } from "./pages/Home";
 import { History } from "./pages/History";
-import { Register } from "./pages/Register";
 import { Today } from "./pages/Today";
 import { Habits } from "./pages/Habits";
-import { GlobalProvider } from "./Global";
+import { AuthContext, GlobalProvider } from "./Global";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { UnknownPage } from "./pages/UnknownPage";
 
 
 function App() {
+  const [user,] = useContext(AuthContext)
+
+
   return (
     <BrowserRouter>
       <GlobalStyle />
@@ -19,6 +23,7 @@ function App() {
             <Route path="/habitos" element={<Habits/>}/>
             <Route path="/hoje" element={<Today/>}/>
             <Route path="/historico" element={<History/>}/>
+            <Route path="*" exact={true} element={<UnknownPage/>} />
           </Routes>
       </GlobalProvider>
     </BrowserRouter>
@@ -30,9 +35,12 @@ export default App;
 
 const GlobalStyle = createGlobalStyle`
   body{
+    height: 100vh;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: aqua;
+  }
+  *{
+    font-family: 'Lexend Deca', sans-serif;
   }
 `
