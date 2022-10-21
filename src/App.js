@@ -23,7 +23,7 @@ function App() {
             <Route path="/habitos" element={<Habits/>}/>
             <Route path="/hoje" element={<Today/>}/>
             <Route path="/historico" element={<History/>}/>
-            <Route path="*" exact={true} element={<UnknownPage/>} />
+            <Route path="*" exact={true} element={<UnknownPage msg={2}/>} />
           </Routes>
       </GlobalProvider>
     </BrowserRouter>

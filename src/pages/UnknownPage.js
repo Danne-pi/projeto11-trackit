@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { AuthContext } from "../Global"
 
-export const UnknownPage = ()=>{
+export const UnknownPage = (props)=>{
     const navigate = useNavigate()
 
     const [user,] = useContext(AuthContext)
 
     return (
         <ThisPage>
-            {user === false ?
-            <h1>Por favor, faça login antes de acessar outras páginas.</h1>
-            :
-            <h1>Erro 404. Pagina não encontrada!</h1>
-        }
+        <h1>{props.msg === 1 ?
+        "Por favor, faça login antes de acessar essa página."
+        :
+        "Erro 404. Pagina não encontrada!"
+        }</h1>
         <button onClick={user === false ? ()=>navigate("/") : navigate("/hoje")}>Voltar</button>
         </ThisPage>)
 }

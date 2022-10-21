@@ -7,7 +7,7 @@ export const Today = () => {
 const [user,] = useContext(AuthContext)
 
     if(user === false){
-        return <UnknownPage />
+        return <UnknownPage msg={1}/>
     }
 
 
