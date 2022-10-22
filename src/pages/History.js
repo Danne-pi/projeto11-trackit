@@ -1,6 +1,8 @@
 import { useContext } from "react"
 import styled from "styled-components"
-import { AuthContext } from "../Global"
+import { Header } from "../components/header"
+import { Menu } from "../components/menu"
+import { AuthContext } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 
 export const History = () => {
@@ -12,6 +14,8 @@ export const History = () => {
 
     return (
         <ThisHistory>
+            <Header />
+            <Menu />
         </ThisHistory>
     )
 }

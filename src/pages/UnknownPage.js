@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { AuthContext } from "../Global"
+import { AuthContext } from "../components/Global"
 
 export const UnknownPage = (props)=>{
     const navigate = useNavigate()

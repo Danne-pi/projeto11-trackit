@@ -1,17 +1,21 @@
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import logo from "../assets/logo.png"
-import { apiURL, AuthContext } from "../Global"
+import { apiURL, AuthContext, Loading } from "../components/Global"
 
 export const Home = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
     const [, setUser] = useContext(AuthContext)
+    const [load, setLoad] = useState(false)
+    const [formState, setFormState] = useState("")
 
     function submit(e){
+        setFormState("disabled")
+        setLoad(true)
         e.preventDefault()
         const URL = apiURL+"auth/login"
         const body = {
@@ -24,9 +28,11 @@ export const Home = () => {
             setUser(a.data)
             setTimeout(() => {
                navigate("/hoje")
-            }, 500);
+            }, 4000);
         })
         promise.catch((a)=>{
+            setFormState("")
+            setLoad(false)
             const msg = a.response.data.message
             alert(msg)
             setEmail("")
@@ -44,6 +50,7 @@ export const Home = () => {
                     value={email}
                     onChange={e=> setEmail(e.target.value)}
                     required
+                    disabled={formState}
                 />
                 <input
                     type="password"
@@ -51,9 +58,17 @@ export const Home = () => {
                     value={pass}
                     onChange={e=> setPass(e.target.value)}
                     required
+                    disabled={formState}
                 />
-                <button type="submit">Entrar</button>
+                <button 
+                    type="submit"
+                    disabled={formState}
+                >{load ? <Loading /> : "Entrar"}</button>
             </form>
+            <button 
+                onClick={()=>{navigate("/cadastro")}}
+                disabled={formState}
+            >Não tem uma conta? Cadastre-se!</button>
         </ThisHome>
     )
 }
@@ -65,8 +80,12 @@ export const Register = () => {
     const [pass, setPass] = useState("")
     const [name, setName] = useState("")
     const [pic, setPic] = useState("")
+    const [load, setLoad] = useState(false)
+    const [formState, setFormState] = useState("")
 
     function submit(e){
+        setFormState("disabled")
+        setLoad(true)
         e.preventDefault()
         const URL = apiURL+"auth/sign-up"
         const body = {
@@ -81,6 +100,8 @@ export const Register = () => {
             navigate("/")
         })
         promise.catch((a)=>{
+            setFormState("")
+            setLoad(false)
             const msg = a.response.data.message
             alert(msg)
             setEmail("")
@@ -98,6 +119,7 @@ export const Register = () => {
                     value={email}
                     onChange={e=> setEmail(e.target.value)}
                     required
+                    disabled={formState}
                 />
                 <input
                     type="password"
@@ -105,6 +127,7 @@ export const Register = () => {
                     value={pass}
                     onChange={e=> setPass(e.target.value)}
                     required
+                    disabled={formState}
                 />
                 <input
                     type="text"
@@ -112,6 +135,7 @@ export const Register = () => {
                     value={name}
                     onChange={e=> setName(e.target.value)}
                     required
+                    disabled={formState}
                 />
                 <input
                     type="text"
@@ -119,10 +143,17 @@ export const Register = () => {
                     value={pic}
                     onChange={e=> setPic(e.target.value)}
                     required
+                    disabled={formState}
                 />
-                <button type="submit">Entrar</button>
+                <button 
+                    type="submit"
+                    disabled={formState}
+                >{load ? <Loading /> : "Registrar"}</button>
             </form>
-            <h4 onClick={()=>{}}>aa</h4>
+            <button 
+                onClick={()=>{navigate("/")}}
+                disabled={formState}
+            >Já tem uma conta? Faça login!</button>
         </ThisHome>
     )
 }
@@ -137,16 +168,41 @@ const ThisHome = styled.div`
     form{
         display: flex;
         flex-direction: column;
+        width: 70%;
 
         input{
-
+            border-radius: 5px;
+            border: 1px solid #D5D5D5;
+            margin-block: 4px;
+            padding: 10px;
+            ::placeholder{
+            color: #DBDBDB ;
+        }
         }
         button{
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            background-color: #52B6FF;
+            height: 48px;
             margin-top: 12px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration-line: none;
+
         }
     }
 
-    h4{
-        margin: 0;
+    button{
+        background-color: transparent;
+        border: none;
+        margin-top: 6px;
+        text-align: center;
+        text-decoration-line: underline;
+        font-size: 14px;
+        color: #52B6FF;
     }
 `

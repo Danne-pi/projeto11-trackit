@@ -1,6 +1,8 @@
 import { useContext } from "react"
 import styled from "styled-components"
-import { AuthContext } from "../Global"
+import { Header } from "../components/header"
+import { Menu } from "../components/menu"
+import { AuthContext } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 
 export const Today = () => {
@@ -13,6 +15,8 @@ const [user,] = useContext(AuthContext)
 
     return (
         <ThisToday>
+            <Header />
+            <Menu />
         </ThisToday>
     )
 }

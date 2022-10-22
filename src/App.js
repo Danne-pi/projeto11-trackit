@@ -3,15 +3,12 @@ import { Home, Register } from "./pages/Home";
 import { History } from "./pages/History";
 import { Today } from "./pages/Today";
 import { Habits } from "./pages/Habits";
-import { AuthContext, GlobalProvider } from "./Global";
+import { GlobalProvider } from "./components/Global";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useContext } from "react";
 import { UnknownPage } from "./pages/UnknownPage";
 
 
 function App() {
-  const [user,] = useContext(AuthContext)
-
 
   return (
     <BrowserRouter>
@@ -38,9 +35,9 @@ const GlobalStyle = createGlobalStyle`
     height: 100vh;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
   }
   *{
+    box-sizing: border-box;
     font-family: 'Lexend Deca', sans-serif;
   }
 `
