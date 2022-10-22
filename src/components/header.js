@@ -9,8 +9,17 @@ export const Header = () => {
 
     return (
         <ThisComponent>
-            <img src={typo} alt="" className="typo"/>
-            <img src={user.image} alt="" className="profile" />
+            <img 
+                src={typo} 
+                alt="" 
+                className="typo"
+            />
+            <img 
+                data-identifier="avatar"
+                src={user.image} 
+                alt="" 
+                className="profile" 
+            />
 
         </ThisComponent>
     )

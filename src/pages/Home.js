@@ -45,6 +45,7 @@ export const Home = () => {
             <img src={logo} alt="" />
             <form onSubmit={submit}>
                 <input
+                    data-identifier="input-email"
                     type="email"
                     placeholder="E-mail"
                     value={email}
@@ -53,6 +54,7 @@ export const Home = () => {
                     disabled={formState}
                 />
                 <input
+                    data-identifier="input-password"
                     type="password"
                     placeholder="Senha"
                     value={pass}
@@ -61,11 +63,13 @@ export const Home = () => {
                     disabled={formState}
                 />
                 <button 
+                    data-identifier="login-btn"
                     type="submit"
                     disabled={formState}
                 >{load ? <Loading /> : "Entrar"}</button>
             </form>
             <button 
+                data-identifier="sign-up-action"
                 onClick={()=>{navigate("/cadastro")}}
                 disabled={formState}
             >Não tem uma conta? Cadastre-se!</button>
@@ -114,6 +118,7 @@ export const Register = () => {
             <img src={logo} alt="" />
             <form onSubmit={submit}>
                 <input
+                    data-identifier="input-email"
                     type="email"
                     placeholder="E-mail"
                     value={email}
@@ -122,6 +127,7 @@ export const Register = () => {
                     disabled={formState}
                 />
                 <input
+                    data-identifier="input-password"
                     type="password"
                     placeholder="Senha"
                     value={pass}
@@ -130,6 +136,7 @@ export const Register = () => {
                     disabled={formState}
                 />
                 <input
+                    data-identifier="input-name"
                     type="text"
                     placeholder="Nome"
                     value={name}
@@ -138,6 +145,7 @@ export const Register = () => {
                     disabled={formState}
                 />
                 <input
+                    data-identifier="input-photo"
                     type="text"
                     placeholder="Foto"
                     value={pic}
@@ -145,12 +153,14 @@ export const Register = () => {
                     required
                     disabled={formState}
                 />
-                <button 
+                <button
+                    data-identifier="sign-up-btn" 
                     type="submit"
                     disabled={formState}
                 >{load ? <Loading /> : "Registrar"}</button>
             </form>
             <button 
+                data-identifier="back-to-login-action"
                 onClick={()=>{navigate("/")}}
                 disabled={formState}
             >Já tem uma conta? Faça login!</button>

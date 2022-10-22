@@ -1,14 +1,25 @@
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { Progress } from "./Global"
 
 
 
 export const Menu = () => {
+    const navigate = useNavigate()
     return (
         <ThisComponent>
-            <button>Habitos</button>
-            <button className="tracker"><Progress percent={80}/></button>
-            <button>Historico</button>
+            <button 
+                data-identifier="habit-page-action"
+                onClick={()=>{navigate("/habitos")}}
+            >Habitos</button>
+            <button
+                onClick={()=>{navigate("/hoje")}}
+                className="tracker"
+            ><Progress percent={80}/></button>
+            <button 
+                data-identifier="historic-page-action"
+                onClick={()=>{navigate("/historico")}}
+            >Historico</button>
         </ThisComponent>
     )
 }

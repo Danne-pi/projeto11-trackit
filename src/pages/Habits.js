@@ -15,10 +15,16 @@ export const Habits = () => {
     return (
         <ThisHabits>
             <Header />
+            <h1>Habitos</h1>
             <Menu />
         </ThisHabits>
     )
 }
 
 const ThisHabits = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `

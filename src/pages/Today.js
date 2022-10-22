@@ -16,10 +16,16 @@ const [user,] = useContext(AuthContext)
     return (
         <ThisToday>
             <Header />
+            <h1>Hoje</h1>
             <Menu />
         </ThisToday>
     )
 }
 
 const ThisToday = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `

@@ -15,10 +15,16 @@ export const History = () => {
     return (
         <ThisHistory>
             <Header />
+            <h1>Historico</h1>
             <Menu />
         </ThisHistory>
     )
 }
 
 const ThisHistory = styled.div`
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
