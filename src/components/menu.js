@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Progress } from "./Global"
 
 
 
@@ -6,7 +7,7 @@ export const Menu = () => {
     return (
         <ThisComponent>
             <button>Habitos</button>
-            <button className="tracker">Hoje</button>
+            <button className="tracker"><Progress percent={80}/></button>
             <button>Historico</button>
         </ThisComponent>
     )
@@ -30,7 +31,7 @@ const ThisComponent = styled.div`
     button{
         background-color: transparent;
         border: none;
-        font-size: 14px;
+        font-size: 17px;
         color: #52B6FF;
     }
     .tracker{
@@ -40,5 +41,9 @@ const ThisComponent = styled.div`
         width: 100px;
         transform: translateY(-30px);
         border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
     }
 `

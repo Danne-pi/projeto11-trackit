@@ -1,6 +1,7 @@
 import { ThreeDots } from "react-loader-spinner"
 import { createContext, useState } from 'react';
-import { buildStyles, CircularProgressbarWithChildren } from "react-circular-progressbar";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import 'react-circular-progressbar/dist/styles.css';
 
 export const AuthContext = createContext([false, () => {}])
 
@@ -27,13 +28,14 @@ export const Loading = () => {
     />
 }
 
-export const Progress = (percentage) => {
-    return <CircularProgressbarWithChildren 
-        value={percentage} 
+export const Progress = (props) => {
+    return <CircularProgressbar 
+        text="Hoje"
+        value={props.percent} 
         styles={buildStyles({
-            pathColor: "#52B6FF",
-            trailColor: `rgba(0,0,0,0)`
-        })}>
-            <h1>HojeS2</h1>
-        </CircularProgressbarWithChildren>;
+            pathColor: "white",
+            trailColor: `transparent`,
+            textColor: 'white',
+            textSize: '18px'
+        })}/>
 }
