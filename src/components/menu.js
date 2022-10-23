@@ -15,7 +15,7 @@ export const Menu = () => {
             <button
                 onClick={()=>{navigate("/hoje")}}
                 className="tracker"
-            ><Progress percent={80}/></button>
+            ><Progress percent={85}/></button>
             <button 
                 data-identifier="historic-page-action"
                 onClick={()=>{navigate("/historico")}}
