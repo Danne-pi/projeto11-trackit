@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { apiURL, AuthContext, BasicPageLayout, BottomSpace, PageLoad, PercentContext } from "../components/Global"
+import { apiURL, AuthContext, BasicPageLayout, BottomSpace, PageLoad, PercentContext, SaveUser } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -44,6 +44,7 @@ export const Today = () => {
 
     useEffect(()=>{
         LoadList()
+        SaveUser(user)
     },[])
 
     function letsCount(list){

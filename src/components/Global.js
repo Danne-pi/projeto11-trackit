@@ -110,3 +110,9 @@ export const ThisCheckDelete = styled.div`
         }
     }
 `
+
+export function SaveUser(user){
+   if ( localStorage.length < 1 ){
+    localStorage.setItem('user', JSON.stringify(user))
+   } 
+}

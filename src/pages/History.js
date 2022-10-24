@@ -1,10 +1,12 @@
 import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { AuthContext, BasicPageLayout } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 
 export const History = () => {
-    const [user,] = useContext(AuthContext)
+    const [user, setUser] = useContext(AuthContext)
+    const navigate = useNavigate()
 
     if(user === false){
         return <UnknownPage />
@@ -15,6 +17,15 @@ export const History = () => {
             <BasicPageLayout />
             <h2>Histórico</h2>
             <h3>Em breve você poderá ver o histórico dos seus hábitos aqui!</h3>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <button onClick={()=>{
+                setUser(false)
+                localStorage.clear()
+                navigate("/")
+                }} className="logout">Desconectar</button>
         </ThisHistory>
     )
 }
@@ -39,5 +50,12 @@ const ThisHistory = styled.div`
         font-weight: 400;
         color: #666666;
         margin-block: 0px;
+    }
+    .logout{
+        color: white;
+        background-color: red;
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
     }
 `

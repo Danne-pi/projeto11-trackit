@@ -4,7 +4,7 @@ import { History } from "./pages/History";
 import { Today } from "./pages/Today";
 import { Habits } from "./pages/Habits";
 import { GlobalProvider } from "./components/Global";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { UnknownPage } from "./pages/UnknownPage";
 
 

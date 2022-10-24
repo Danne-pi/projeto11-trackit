@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import logo from "../assets/logo.png"
@@ -12,6 +12,15 @@ export const Home = () => {
     const [, setUser] = useContext(AuthContext)
     const [load, setLoad] = useState(false)
     const [formState, setFormState] = useState("")
+
+    useEffect(()=>{
+       if(localStorage.length > 0){
+        setUser(JSON.parse(localStorage.getItem('user')))
+        setTimeout(() => {
+            navigate("/hoje")
+        }, 1000);
+       }
+    },[])
 
     function submit(e){
         e.preventDefault()

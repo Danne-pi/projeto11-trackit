@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { AuthContext } from "../components/Global"
@@ -6,7 +6,16 @@ import { AuthContext } from "../components/Global"
 export const UnknownPage = (props)=>{
     const navigate = useNavigate()
 
-    const [user,] = useContext(AuthContext)
+    const [user, setUser] = useContext(AuthContext)
+
+    useEffect(()=>{
+        if(localStorage.length > 0){
+         setUser(JSON.parse(localStorage.getItem('user')))
+         setTimeout(() => {
+             navigate("/hoje")
+         }, 1000);
+        }
+     },[])
 
     return (
         <ThisPage>
