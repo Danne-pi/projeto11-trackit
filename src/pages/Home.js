@@ -14,9 +14,9 @@ export const Home = () => {
     const [formState, setFormState] = useState("")
 
     function submit(e){
+        e.preventDefault()
         setFormState("disabled")
         setLoad(true)
-        e.preventDefault()
         const URL = apiURL+"auth/login"
         const body = {
             email: email,
@@ -35,7 +35,6 @@ export const Home = () => {
             setLoad(false)
             const msg = a.response.data.message
             alert(msg)
-            setEmail("")
             setPass("")
         })
     }
@@ -88,9 +87,9 @@ export const Register = () => {
     const [formState, setFormState] = useState("")
 
     function submit(e){
+        e.preventDefault()
         setFormState("disabled")
         setLoad(true)
-        e.preventDefault()
         const URL = apiURL+"auth/sign-up"
         const body = {
             email: email,

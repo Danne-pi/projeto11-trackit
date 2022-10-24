@@ -9,7 +9,8 @@ import check from "../assets/check.svg"
 export const Today = () => {
     const [user,] = useContext(AuthContext)
     dayjs.locale('pt-br')
-    const semana = (dayjs().format('dddd'))
+    let semana = (dayjs().format('dddd'))
+    semana = semana.charAt(0).toUpperCase() + semana.slice(1); 
     const data = dayjs().format('DD/MM')
 
     const listafake = [

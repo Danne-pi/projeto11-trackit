@@ -44,12 +44,12 @@ export const Progress = (props) => {
 }
 
 export const BasicPageLayout = () => {
-    const Spacer = styled.div`
-    height: 8vh;
-    `
     return <>
         <Spacer />
         <Header />
         <Menu />
     </>
 }
+const Spacer = styled.div`
+height: 8vh;
+`
