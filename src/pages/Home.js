@@ -65,7 +65,7 @@ export const Home = () => {
                     data-identifier="login-btn"
                     type="submit"
                     disabled={formState}
-                >{load ? <Loading /> : "Entrar"}</button>
+                >{load ? <Loading height={24} width={50} radius={9}/> : "Entrar"}</button>
             </form>
             <button 
                 data-identifier="sign-up-action"
@@ -156,7 +156,7 @@ export const Register = () => {
                     data-identifier="sign-up-btn" 
                     type="submit"
                     disabled={formState}
-                >{load ? <Loading /> : "Registrar"}</button>
+                >{load ? <Loading height={24} width={50} radius={9}/> : "Registrar"}</button>
             </form>
             <button 
                 data-identifier="back-to-login-action"

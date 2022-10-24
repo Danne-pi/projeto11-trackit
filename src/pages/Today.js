@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { apiURL, AuthContext, BasicPageLayout, BottomSpace, PercentContext } from "../components/Global"
+import { apiURL, AuthContext, BasicPageLayout, BottomSpace, PageLoad, PercentContext } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -9,15 +9,19 @@ import axios from "axios"
 
 export const Today = () => {
     const [user,] = useContext(AuthContext)
-    const [,setPercent] = useContext(PercentContext)
+    const [percent, setPercent] = useContext(PercentContext)
     const [todayTasks, setTodayTasks] = useState([])
     dayjs.locale('pt-br')
     let semana = (dayjs().format('dddd'))
     semana = semana.charAt(0).toUpperCase() + semana.slice(1); 
     const data = dayjs().format('DD/MM')
+    const [hasLoaded, setHasLoaded] = useState(false)
 
 
     function LoadList(){
+
+        setHasLoaded(false)
+
         const URL = apiURL+"habits/today"
 
         const promise = axios.get(URL, {
@@ -25,11 +29,13 @@ export const Today = () => {
         })
 
         promise.then((a)=>{
+            setHasLoaded(true)
             setTodayTasks(a.data)
             letsCount(a.data)
 
         })
         promise.catch((a)=>{
+            setHasLoaded(true)
             console.log(a.response.data.message)
         })
 
@@ -55,7 +61,9 @@ export const Today = () => {
     }
 
     function habitCheck(id, stage){
-        
+
+        setHasLoaded(false)
+    
         let checker = stage === true ? "uncheck" : "check"
         
         const URL = apiURL+"habits/"+id+"/"+checker
@@ -81,14 +89,15 @@ export const Today = () => {
     function PrintTasks(){
         return todayTasks.map((item) => (
             <div 
+                data-identifier="done-habit-btn"
                 className="main-wrapper" 
                 key={item.id}
-                onClick={()=>habitCheck(item.id, item.done)}
+                onClick={hasLoaded === false ?()=>{} : ()=>habitCheck(item.id, item.done)}
                 >
-                <div className="wrapper">
+                <div className="wrapper" data-identifier="today-infos">
                     <h3>{item.name}</h3>
-                    <h4>Sequência atual: {item.currentSequence}</h4>
-                    <h4>Seu recorde: {item.highestSequence}</h4>
+                    <h4>Sequência atual: <span className={item.done === true ? "checked" : "default"}>{item.currentSequence}</span></h4>
+                    <h4>Seu recorde: <span className={(item.highestSequence === item.currentSequence && item.highestSequence>0) ? "checked" : "default"}>{item.highestSequence}</span></h4>
                 </div>
                 <div className={"img-wrapper " + (item.done === false ? "hide":"")}>
                     <img src={check} alt=""/>
@@ -106,10 +115,19 @@ export const Today = () => {
 
 
     return (
-        <ThisToday>
+        <ThisToday
+        subColor={percent === 0 ?"#BABABA" : "#8FC549"}
+        >
+            {hasLoaded === false ? <PageLoad /> : <></>}
             <BasicPageLayout />
-            <h2 className="title">{semana+", "+data}</h2>
-            <h3 className="sub">Nenhum hábito concluído ainda</h3>
+            <h2 className="title" data-identifier="today-infos">{semana+", "+data}</h2>
+            <h3 data-identifier="today-infos" className="sub">{
+            todayTasks.length<1?
+                "Não existem hábitos para hoje": 
+            percent === 0 ? 
+                "Nenhum hábito concluído ainda":
+                percent.toFixed(0)+"% dos hábitos concluídos"
+                }</h3>
             <ListTasks>
                 <PrintTasks />
                 <BottomSpace />
@@ -143,13 +161,21 @@ const ListTasks = styled.div`
             justify-content: center;
             align-items: flex-start;
             
-            h3, h4{
+            h3{
+                margin-bottom: 1vh;
                 color: #666666;
                 font-weight: 400;
                 margin-block: 0;
             }
-            h3{
-                margin-bottom: 1vh;
+            h4{
+                font-weight: 400;
+                margin-block: 0;
+                .checked{
+                    color: #8FC549;
+                }
+                .default{
+                    color: #666666;
+                }
             }
         }
 
@@ -175,6 +201,7 @@ const ThisToday = styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    margin-top: 10vh;
 
     .title{
         width: 90%;
@@ -186,7 +213,7 @@ const ThisToday = styled.div`
     .sub{
         width: 90%;
         font-weight: 400;
-        color: #BABABA;
+        color: ${props => props.subColor};
         margin-block: 0px;
     }
 `

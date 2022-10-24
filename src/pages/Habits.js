@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { apiURL, AuthContext, BasicPageLayout, BottomSpace } from "../components/Global"
+import { apiURL, AuthContext, BasicPageLayout, BottomSpace, Loading, PageLoad, ThisCheckDelete } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 import trash from "../assets/trash.png"
 
@@ -13,9 +13,14 @@ export const Habits = () => {
     const [name, setName] = useState("")
     const [formState, setFormState] = useState("")
     const [selectedList, setSelectedList] = useState([])
+    const [hasLoaded, setHasLoaded] = useState(false)
+    const [showDelete, setShowDelete] = useState("")
 
 
     function LoadList(){
+
+        setHasLoaded(false)
+
         const URL = apiURL+"habits"
 
         const promise = axios.get(URL, {
@@ -24,9 +29,11 @@ export const Habits = () => {
 
         promise.then((a)=>{
             setTaskList(a.data)
+            setHasLoaded(true)
+
         })
         promise.catch((a)=>{
-            alert(a.response.data.message)
+            console.log(a.response.data.message)
         })
     }
 
@@ -38,7 +45,7 @@ export const Habits = () => {
         
         const body = {
             name: name,
-	        days: selectedList // segunda, quarta e sexta
+	        days: selectedList
         }
 
         const config = {
@@ -49,17 +56,23 @@ export const Habits = () => {
 
         promise.then((a)=>{
             LoadList()
-            CancelForm()
+            setName("")
+            setSelectedList([])
+            setCreateHabit(false)
             setFormState("")
         })
         promise.catch((a)=>{
             alert(a.response.data.message)
-            CancelForm()
             setFormState("")
         })
     }
 
     function deleteId(id){
+        
+        setHasLoaded(false)
+
+        setShowDelete("")
+
         const URL = apiURL+"habits/"+id
 
         const config = {
@@ -72,7 +85,7 @@ export const Habits = () => {
             LoadList()
         })
         promise.catch((a)=>{
-            alert(a.response.data.message)
+            console.log(a.response.data.message)
         })
     }
 
@@ -82,14 +95,6 @@ export const Habits = () => {
         LoadList()
     }, [])
 
-
-    
-
-    function CancelForm(){
-        setName("")
-        setSelectedList([])
-        setCreateHabit(false)
-    }
 
     function SelectDay(index){
         let newArr = [...selectedList]
@@ -111,6 +116,7 @@ export const Habits = () => {
         
         return weekDays.map((item, index) => (
             <div 
+            data-identifier="week-day-btn"
             key={index}
             className={selectedList.includes(index+1)?"selected":""}
             onClick={()=>{SelectDay(index)}}
@@ -121,6 +127,18 @@ export const Habits = () => {
         ))
     }
 
+    const CheckDelete = () =>{
+        return (
+            <ThisCheckDelete>
+                <h3 className="question">Deseja excluir esse hábito?</h3>
+                <span>
+                    <button onClick={()=>{setShowDelete("")}} className="cancel">Não</button>
+                    <button onClick={()=>{deleteId(showDelete)}} className="confirm">Sim</button>
+                </span>
+            </ThisCheckDelete>
+        )
+    }
+
     const DrawTaskList = ()=>{
         return taskList.map((item) => (
             <div 
@@ -129,8 +147,8 @@ export const Habits = () => {
                 id={item.id}
                 >
                 <div className="head-wrapper">
-                    <span>{item.name}</span>
-                    <img src={trash} alt="" onClick={()=>{deleteId(item.id)}} />
+                    <span data-identifier="habit-name">{item.name}</span>
+                    <img data-identifier="delete-habit-btn" src={trash} alt="" onClick={hasLoaded === false ?()=>{} : ()=>{setShowDelete(item.id)}} />
                 </div>
                 <div className="day-wrapper">
                     {weekDays.map((d, index) => (
@@ -157,10 +175,11 @@ export const Habits = () => {
 
     return (
         <ThisHabits>
+            {hasLoaded === false ? <PageLoad /> : <></>}
             <BasicPageLayout />
             <div className="title-wrapper">
                 <h2>Meus hábitos</h2>
-                <div onClick={()=>{setCreateHabit(true)}}>+</div>
+                <div data-identifier="create-habit-btn" onClick={()=>{setCreateHabit(true)}}>+</div>
             </div>
             {createHabit === true ? 
             <ThisHabitCreator
@@ -168,6 +187,7 @@ export const Habits = () => {
             >
                 <form onSubmit={submit}>
                     <input
+                        data-identifier="input-habit-name"
                         type="text"
                         placeholder="nome do hábito"
                         value={name}
@@ -179,21 +199,23 @@ export const Habits = () => {
                         <DrawWeekBtns />
                     </div>
                     <div className="btn-wrapper">
-                        <button className="cancel" onClick={()=>{CancelForm()}}>Cancelar</button>
+                        <button data-identifier="cancel-habit-create-btn" className="cancel" onClick={()=>{setCreateHabit(false)}}>Cancelar</button>
                         <button 
+                            data-identifier="save-habit-create-btn"
                             className="save" 
                             type="submit"
                             disabled={(selectedList.length < 1 || name.length < 5 || !formState === "")? "disabled":""}
-                        >Salvar</button>
+                        >{formState ===""?"Salvar":<Loading height={20} width={50} radius={8}/>}</button>
                     </div>
                 </form>
             </ThisHabitCreator>
             :<></>}
-            {taskList.length === 0 ? <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
+            {taskList.length === 0 ? <h3 data-identifier="no-habit-message">Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
             :<ThisTaskList>
                 <BottomSpace/>
                 <DrawTaskList />
             </ThisTaskList>}
+            {showDelete.length < 1 ? <></> : <CheckDelete />}
         </ThisHabits>
     )
 }
