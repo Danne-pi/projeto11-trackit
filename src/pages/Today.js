@@ -1,46 +1,96 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { AuthContext, BasicPageLayout } from "../components/Global"
+import { apiURL, AuthContext, BasicPageLayout, BottomSpace, PercentContext } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
 import check from "../assets/check.svg"
+import axios from "axios"
 
 export const Today = () => {
     const [user,] = useContext(AuthContext)
+    const [,setPercent] = useContext(PercentContext)
+    const [todayTasks, setTodayTasks] = useState([])
     dayjs.locale('pt-br')
     let semana = (dayjs().format('dddd'))
     semana = semana.charAt(0).toUpperCase() + semana.slice(1); 
     const data = dayjs().format('DD/MM')
 
-    const listafake = [
-        {
-            titulo: "Ler 1 capítulo de livro",
-            sequencia: "2",
-            recorde: "3",
-        },
-        {
-            titulo: "Ler 1 capítulo de livro",
-            sequencia: "2",
-            recorde: "3",
-        },
-        {
-            titulo: "Ler 1 capítulo de livro",
-            sequencia: "2",
-            recorde: "3",
-        },
-    ]
+
+    function LoadList(){
+        const URL = apiURL+"habits/today"
+
+        const promise = axios.get(URL, {
+            headers: {'Authorization': 'Bearer ' + user.token}
+        })
+
+        promise.then((a)=>{
+            setTodayTasks(a.data)
+            letsCount(a.data)
+
+        })
+        promise.catch((a)=>{
+            console.log(a.response.data.message)
+        })
+
+        
+    }
+
+    useEffect(()=>{
+        LoadList()
+    },[])
+
+    function letsCount(list){
+        let max=list.length
+        let min=0
+        for (let i = 0; i < list.length; i++) {
+            if(list[i].done === true){
+                min ++
+            }            
+        }
+        if(min > 0){
+            setPercent((min/max) * 100)
+        }
+        else {setPercent(0)}
+    }
+
+    function habitCheck(id, stage){
+        
+        let checker = stage === true ? "uncheck" : "check"
+        
+        const URL = apiURL+"habits/"+id+"/"+checker
+
+        const body = {
+            id: id
+        }
+
+        const config = {
+            headers: {'Authorization': 'Bearer ' + user.token}
+        }
+
+        const promise = axios.post(URL, body, config)
+
+        promise.then((a)=>{
+            LoadList()
+        })
+        promise.catch((a)=>{
+            console.log(a.response.data.message)
+        })
+    }
 
     function PrintTasks(){
-
-        return listafake.map((item) => (
-            <div className="main-wrapper">
+        return todayTasks.map((item) => (
+            <div 
+                className="main-wrapper" 
+                key={item.id}
+                onClick={()=>habitCheck(item.id, item.done)}
+                >
                 <div className="wrapper">
-                    <h3>{item.titulo}</h3>
-                    <h4>Sequência atual: {item.sequencia}</h4>
-                    <h4>Seu recorde: {item.recorde}</h4>
+                    <h3>{item.name}</h3>
+                    <h4>Sequência atual: {item.currentSequence}</h4>
+                    <h4>Seu recorde: {item.highestSequence}</h4>
                 </div>
-                <div className="img-wrapper">
+                <div className={"img-wrapper " + (item.done === false ? "hide":"")}>
                     <img src={check} alt=""/>
                 </div>
             </div>
@@ -62,6 +112,7 @@ export const Today = () => {
             <h3 className="sub">Nenhum hábito concluído ainda</h3>
             <ListTasks>
                 <PrintTasks />
+                <BottomSpace />
             </ListTasks>
         </ThisToday>
     )
@@ -111,6 +162,9 @@ const ListTasks = styled.div`
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        .hide{
+            opacity: 0;
         }
     }
 `

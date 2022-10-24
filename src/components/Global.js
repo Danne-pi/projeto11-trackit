@@ -1,5 +1,5 @@
 import { ThreeDots } from "react-loader-spinner"
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 import styled from "styled-components";
@@ -7,14 +7,19 @@ import { Header } from "./header";
 import { Menu } from "./menu";
 
 export const AuthContext = createContext([false, () => {}])
+export const PercentContext = createContext([0, () => {}])
 
 export const GlobalProvider = ({children}) => {
     const [user, setUser] = useState(false)
+    const [percent, setPercent] = useState(0)
 
     return (
+        <PercentContext.Provider value={[percent, setPercent]}>
         <AuthContext.Provider value={[user, setUser]}>
             {children}
         </AuthContext.Provider>
+        </PercentContext.Provider>
+        
     )
 }
 
@@ -44,12 +49,14 @@ export const Progress = (props) => {
 }
 
 export const BasicPageLayout = () => {
+    const [percent,] = useContext(PercentContext)
+
     return <>
-        <Spacer />
         <Header />
-        <Menu />
+        <Menu percent={percent}/>
     </>
 }
-const Spacer = styled.div`
-height: 8vh;
+
+export const BottomSpace = styled.div`
+    height: 10vh;
 `

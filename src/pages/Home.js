@@ -28,7 +28,7 @@ export const Home = () => {
             setUser(a.data)
             setTimeout(() => {
                navigate("/hoje")
-            }, 4000);
+            }, 500);
         })
         promise.catch((a)=>{
             setFormState("")

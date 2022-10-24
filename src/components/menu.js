@@ -4,8 +4,9 @@ import { Progress } from "./Global"
 
 
 
-export const Menu = () => {
+export const Menu = (props) => {
     const navigate = useNavigate()
+
     return (
         <ThisComponent>
             <button 
@@ -15,7 +16,7 @@ export const Menu = () => {
             <button
                 onClick={()=>{navigate("/hoje")}}
                 className="tracker"
-            ><Progress percent={85}/></button>
+            ><Progress percent={props.percent} /></button>
             <button 
                 data-identifier="historic-page-action"
                 onClick={()=>{navigate("/historico")}}

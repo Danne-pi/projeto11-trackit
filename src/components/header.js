@@ -46,6 +46,7 @@ const ThisComponent = styled.div`
         height: 6vh;
         width: 6vh;
         border-radius: 50px;
+        object-fit: cover;
     }
 
 `

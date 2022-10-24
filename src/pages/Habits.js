@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { apiURL, AuthContext, BasicPageLayout } from "../components/Global"
+import { apiURL, AuthContext, BasicPageLayout, BottomSpace } from "../components/Global"
 import { UnknownPage } from "./UnknownPage"
 import trash from "../assets/trash.png"
 
@@ -190,7 +190,10 @@ export const Habits = () => {
             </ThisHabitCreator>
             :<></>}
             {taskList.length === 0 ? <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
-            :<ThisTaskList><DrawTaskList /></ThisTaskList>}
+            :<ThisTaskList>
+                <BottomSpace/>
+                <DrawTaskList />
+            </ThisTaskList>}
         </ThisHabits>
     )
 }
@@ -199,6 +202,8 @@ export const Habits = () => {
 const ThisTaskList = styled.div`
     width: 90%;
     margin-top: 40px;
+    display: flex;
+    flex-direction: column-reverse;
 
     .task-wrapper{
         margin-bottom: 40px;
@@ -323,6 +328,7 @@ const ThisHabits = styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    margin-top: 10vh;
 
     .title-wrapper{
         width: 100%;
