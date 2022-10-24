@@ -2,6 +2,9 @@ import { ThreeDots } from "react-loader-spinner"
 import { createContext, useState } from 'react';
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
+import styled from "styled-components";
+import { Header } from "./header";
+import { Menu } from "./menu";
 
 export const AuthContext = createContext([false, () => {}])
 
@@ -38,4 +41,15 @@ export const Progress = (props) => {
             textColor: 'white',
             textSize: '18px'
         })}/>
+}
+
+export const BasicPageLayout = () => {
+    const Spacer = styled.div`
+    height: 8vh;
+    `
+    return <>
+        <Spacer />
+        <Header />
+        <Menu />
+    </>
 }
